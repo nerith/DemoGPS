@@ -48,8 +48,26 @@ public final class DemoGPS {
         thread.start();
     }
 
+    /**
+     * Processes an NMEA string.
+     *
+     * @param nmea The NMEA string
+     */
     private void processNMEAString(String nmea) {
         String[] contents = nmea.split(",");
+
+        int checksum = nmea.charAt(1);
+
+        for(int i = 2; i < nmea.length() && nmea.charAt(i) != '*'; i++) {
+            checksum ^= nmea.charAt(i);
+        }
+
+        if(!convertChecksumToHex().equals(nmea.split("*")[1]) {
+            return;
+        }
+
+        System.out.println(checksum);
+
         double latitude = 0.0;
         double longitude = 0.0;
 
